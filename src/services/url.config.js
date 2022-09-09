@@ -13,7 +13,7 @@ export const TOKEN_CYBERSOFT =
 
 let timeRequestMax = 10;
 
-const getAccessToken = () => {
+export const getAccessToken = () => {
   const dataJSON = localStorage.getItem(USER);
   if (dataJSON) {
     const data = JSON.parse(dataJSON);
@@ -49,7 +49,7 @@ httpService.interceptors.response.use(
   function (error) {
     store.dispatch(setSpinnerEnded());
 
-    switch (error.response.status) {
+    switch (error.response?.status) {
       case 401:
       case 403:
         window.location.href = "/login";

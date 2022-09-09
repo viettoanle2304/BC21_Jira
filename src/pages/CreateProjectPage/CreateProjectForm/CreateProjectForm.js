@@ -17,11 +17,11 @@ export const CreateProjectForm = () => {
     projectService
       .createProject(values)
       .then((res) => {
-        message.success("Tạo dự án mới thành công");
+        message.success("Dự án mới được khởi tạo thành công");
 
         setTimeout(() => {
           navigate("/projectmanagement");
-        }, 3000);
+        }, 2000);
       })
       .catch((err) => {
         console.error(err);

@@ -1,8 +1,10 @@
 import { Popover } from "antd";
-import { SettingOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
+import { UpdateTaskModal } from "./UpdateTaskModal";
+import { TaskDetailModal } from "./TaskDetailModal";
+import { DeleteTask } from "./DeleteTask";
 
-export const TaskControls = () => {
+export const TaskControls = ({ taskId }) => {
   const [hovered, setHovered] = useState(false);
 
   const handleClickChange = () => {
@@ -15,19 +17,16 @@ export const TaskControls = () => {
 
   const content = (
     <div className="space-y-2">
-      <div
-        className="space-x-2 cursor-pointer hover:text-gray-400"
-        onClick={handleClickChange}
-      >
-        <SettingOutlined />
-        <span>Update Task</span>
+      <div onClick={handleClickChange}>
+        <UpdateTaskModal taskId={taskId} />
       </div>
-      <div
-        className="space-x-2 cursor-pointer hover:text-gray-400"
-        onClick={handleClickChange}
-      >
-        <InfoCircleOutlined />
-        <span>Task Detail</span>
+
+      <div onClick={handleClickChange}>
+        <TaskDetailModal />
+      </div>
+
+      <div onClick={handleClickChange}>
+        <DeleteTask taskId={taskId} />
       </div>
     </div>
   );

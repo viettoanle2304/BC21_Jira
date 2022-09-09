@@ -1,21 +1,48 @@
-import { Avatar, Button, Popover } from "antd";
+import { DeleteProjectButton } from "../pages/ProjectManagementPage/DeleteProjectButton";
+import { EditProjectModal } from "../pages/ProjectManagementPage/EditProjectModal/EditProjectModal";
 import { MemberList } from "../pages/ProjectManagementPage/MemberList/MemberList";
+
+const sorter = (a, b) =>
+  isNaN(a) && isNaN(b) ? (a || "").localeCompare(b || "") : a - b;
 
 export const tableProject = [
   {
     title: "Id",
     dataIndex: "id",
     key: "id",
+    sorter: (a, b) => sorter(a.id, b.id),
   },
   {
     title: "Project Name",
     dataIndex: "projectName",
     key: "projectName",
+    sorter: (a, b) => sorter(a.projectName, b.projectName),
+    render: (projectName, record) => {
+      return (
+        <span
+          className="cursor-pointer"
+          onClick={() => {
+            window.open(`/projectdetail/${record.id}`, "_self");
+          }}
+        >
+          {projectName}
+        </span>
+      );
+    },
   },
   {
     title: "Category",
     dataIndex: "categoryName",
     key: "categoryName",
+    filters: [
+      { text: "Dự án web", value: "Dự án web" },
+      { text: "Dự án phần mềm", value: "Dự án phần mềm" },
+      { text: "Dự án di động", value: "Dự án di động" },
+    ],
+    sorter: (a, b) => sorter(a.categoryName, b.categoryName),
+    filterMode: "tree",
+    filterSearch: true,
+    onFilter: (value, record) => record.categoryName.includes(value),
   },
   {
     title: "Creator",
@@ -36,53 +63,19 @@ export const tableProject = [
   },
   {
     title: "Members",
-    dataIndex: "members",
+    dataIndex: "id",
     key: "members",
-    render: (memberList) => {
-      return (
-        <Popover
-          placement="bottom"
-          content={() => <MemberList memberList={memberList} />}
-          title="Members"
-        >
-          <div className="flex relative w-min">
-            <Avatar.Group
-              className="cursor-pointer"
-              maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
-            >
-              {memberList.map((member, i) => (
-                <Avatar src={member.avatar} key={i} />
-              ))}
-              <Avatar
-                className="flex justify-center items-center bg-[#fde3cf] hover:bg-white hover:border-2 hover:border-[#fde3cf]"
-                style={{
-                  color: "#f6822a",
-                }}
-                onClick={() => {
-                  console.log("clicked");
-                }}
-              >
-                +
-              </Avatar>
-            </Avatar.Group>
-          </div>
-        </Popover>
-      );
-    },
+    render: (id) => <MemberList id={id} />,
   },
   {
     title: "Action",
     dataIndex: "action",
     key: "action",
-    render: () => {
+    render: (action, record) => {
       return (
         <div className="flex space-x-2">
-          <Button className="bg-green-600 border-green-600 text-white w-10 h-10 rounded-full flex justify-center items-center hover:bg-white hover:text-green-600 hover:border-green-600 focus:bg-white focus:text-green-600 focus:border-green-600">
-            <i className="fa-solid fa-pen-to-square"></i>
-          </Button>
-          <Button className="bg-red-600 border-red-600 text-white rounded-full w-10 h-10 flex justify-center items-center hover:bg-white hover:text-red-600 hover:border-red-600 focus:bg-white focus:text-red-600 focus:border-red-600">
-            <i className="fa-solid fa-trash"></i>
-          </Button>
+          <EditProjectModal project={record} />
+          <DeleteProjectButton project={record} />
         </div>
       );
     },

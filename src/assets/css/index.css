@@ -16,3 +16,9 @@ code {
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
+
+.ant-popover-placement-bottom,
+.ant-popover-placement-bottomLeft,
+.ant-popover-placement-bottomRight {
+  padding-top: 0 !important;
+}

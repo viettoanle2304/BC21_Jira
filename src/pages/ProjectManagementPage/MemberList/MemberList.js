@@ -25,7 +25,7 @@ export const MemberList = ({ id }) => {
       });
   }, []);
 
-  const handleClickChange = (visible) => {
+  const handleClickChange = () => {
     setHovered(false);
   };
 
@@ -46,6 +46,8 @@ export const MemberList = ({ id }) => {
     );
   })();
 
+  // console.log(members);
+
   return (
     <Popover
       placement="bottom"
@@ -64,7 +66,7 @@ export const MemberList = ({ id }) => {
           {members.map((member, i) => (
             <Avatar src={member.avatar} key={i} />
           ))}
-          <AddUserModal />
+          <AddUserModal projectId={id} />
         </Avatar.Group>
       </div>
     </Popover>

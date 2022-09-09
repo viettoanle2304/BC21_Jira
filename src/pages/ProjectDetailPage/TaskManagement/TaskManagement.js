@@ -2,19 +2,26 @@ import { Avatar } from "antd";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getTaskListActionService } from "../../../redux/actions/task.action";
 import { TaskControls } from "./TaskControls";
 
-export const TaskManagement = ({ headerName, project }) => {
-  const [taskList, setTaskList] = useState([]);
+export const TaskManagement = ({ headerName, projectId }) => {
+  const [listTask, setListTask] = useState([]);
+  const { taskLst } = useSelector((state) => state.taskSlice);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const taskList = project.lstTask?.find(
-      (taskLst) => taskLst.statusName === headerName
-    ).lstTaskDeTail;
+    dispatch(getTaskListActionService(projectId));
+  }, [dispatch, projectId]);
 
-    // console.log(taskList);
-    setTaskList(taskList);
-  }, [headerName, project]);
+  useEffect(() => {
+    const taskList = taskLst.find(
+      (taskLst) => taskLst.statusName === headerName
+    )?.lstTaskDeTail;
+
+    setListTask(taskList);
+  }, [taskLst]);
 
   return (
     <div className="py-2 bg-gray-200 w-full border-3 border-gray-400 border-solid rounded-xl shadow">
@@ -22,8 +29,8 @@ export const TaskManagement = ({ headerName, project }) => {
         <h4 className="text-gray-400 font-semibold">{headerName}</h4>
       </header>
 
-      <div className="">
-        {taskList?.map((task, i) => {
+      <div className="space-y-2">
+        {listTask?.map((task, i) => {
           return (
             <div key={i} className="bg-white px-3 py-2 xl:py-4">
               <div className="flex justify-between relative">
@@ -31,7 +38,7 @@ export const TaskManagement = ({ headerName, project }) => {
                   task.taskName.slice(1)}
 
                 <div className="">
-                  <TaskControls />
+                  <TaskControls taskId={task.taskId} />
                 </div>
               </div>
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL, TOKEN_CYBERSOFT } from "./url.config.js";
+import { BASE_URL, httpService, TOKEN_CYBERSOFT } from "./url.config.js";
 
 export const userServices = {
   login: ({ email, password }) => {
@@ -24,5 +24,9 @@ export const userServices = {
         "Content-Type": "application/json",
       },
     });
+  },
+
+  getUser: () => {
+    return httpService.get(`/api/Users/getUser`);
   },
 };
